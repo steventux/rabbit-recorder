@@ -1,10 +1,10 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    eventmachine (0.12.10)
+    bunny (0.7.9)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  eventmachine
+  bunny
