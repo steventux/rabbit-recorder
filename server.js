@@ -8,22 +8,34 @@ var app = express.createServer()
 app.listen(8080);
 
 io.sockets.on('connection', function(socket) {
+
   var pub = context.socket('PUB');
+  var sub = context.socket('SUB');
+
+  sub.setEncoding('utf8');
   
-  // var sub = context.socket('SUB');
-  // sub.setEncoding('utf8');
-  
+  // A command from the UI
+  socket.on('command', function(data) {
+    pub.write(data);
+  })
+  // A move event from the UI
   socket.on('move-event', function (data) {
     socket.broadcast.emit('move-event', data);
-    pub.write(data)
+    pub.write(data);
   });
 
   socket.on('disconnect', function() {
     pub.destroy();
-    // sub.destroy();
+    sub.destroy();
   });
 
-  // sub.connect('move-events');
+  // Data sent to the amqp subscriber 
+  sub.on('data', function(msg) {
+    console.log(msg)
+    socket.broadcast.emit('move-event', msg);
+  })
+
+  sub.connect('playbacks');
   pub.connect('move-events');
   
 });

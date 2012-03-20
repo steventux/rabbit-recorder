@@ -1,10 +1,14 @@
 <html>
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <title></title>
+  <title>Rabbit.JS, Socket.IO distributed messaging demo.</title>
 </head>
 <body>
-<div id="coords" style="font-family:sans-serif;#eee;"></div>
+
+<div>
+  <span id="coords" style="font-family:sans-serif;#eee;"></span>
+  <button id="replay" style="display:none;">Replay</button>
+</div>
 
 <div id="moveable" style="position:absolute;top:40%;left:40%;">
   <img src="moveable.jpg" alt="d00m!">
@@ -28,20 +32,13 @@
           host : location.hostname, 
           port : 8080 , 
           transports: transports
-        },
-        sub = new io.Socket(config),
-        pub = new io.Socket(config);
+        };
     
     var socket = io.connect('http://' + location.hostname + ':8080', 
       { transports: transports });
-      
-    // sub.connect();
-    // sub.emit('SUB move-events');
-
-    pub.connect();
-    pub.emit('PUB move-events');
 
     var $coords = $("#coords"),
+        $replay = $("#replay"),
         $moveable = $("#moveable");
 
     $moveable.draggable({
@@ -50,11 +47,17 @@
 	    appendTo: 'body',
 	    stop : function(event, ui) {
 	      $coords.html("Left: " + parseInt(ui.offset.left) + ", Top: " + parseInt(ui.offset.top));
+	      $replay.show();
 	      socket.emit('move-event', { x : parseInt(ui.offset.left), y : parseInt(ui.offset.top) });
 	    }
     });
     
+    $replay.click(function() {
+      socket.emit('command', 'replay');
+    });
+    
     socket.on('move-event', function (data) {
+      if (typeof data === 'string') data = $.parseJSON(data);
       $coords.html("Left: " + parseInt(data.x) + ", Top: " + parseInt(data.y));
       $moveable.animate({'left' : data.x + "px", 'top' : data.y + "px"});
     });
