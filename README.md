@@ -15,10 +15,9 @@ Ruby & Bundler
 Dont talk about it... Do it
 ---------------------------
 Fire up the rabbit machine
-> ruby bunny_machine.rb
+  ruby bunny_machine.rb
 
 Fire up the node server
-> node server.js
+  node server.js
 
-Play around at
-http://localhost:8080
+Play around at http://localhost:8080
