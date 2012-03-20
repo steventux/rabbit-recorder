@@ -12,7 +12,7 @@ NodeJS (0.6.13 at time of writing)
 Ruby & Bundler
 
 ## Dont talk about it... Do it
-Fire up the rabbit machine
+Fire up the bunny machine
      
      $ ruby bunny_machine.rb
 
