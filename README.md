@@ -24,4 +24,4 @@ Fire up the node server
      $ node server.js
 
 
-Play around at [http://localhost:8080]
+Play around at [http://localhost:8080](http://localhost:8080)
