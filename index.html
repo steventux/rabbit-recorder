@@ -1,0 +1,66 @@
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title></title>
+</head>
+<body>
+<div id="coords" style="font-family:sans-serif;#eee;"></div>
+
+<div id="moveable" style="position:absolute;top:40%;left:40%;">
+  <img src="moveable.jpg" alt="d00m!">
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="jquery-ui.js"></script>
+<script src="socket.io.js"></script>
+<script>
+  
+//  Wait for it...
+//  $(document).ready(function(){
+
+    // Set URL of your WebSocketMain.swf here:
+    WEB_SOCKET_SWF_LOCATION = "/development/rabbit-distrib-demo/WebSocketMain.swf";
+    // Set this to dump debug message from Flash to console.log:
+    WEB_SOCKET_DEBUG = true;
+  
+    var transports = ['websocket', 'flashsocket', 'xhr-polling'],
+        config = { 
+          host : location.hostname, 
+          port : 8080 , 
+          transports: transports
+        },
+        sub = new io.Socket(config),
+        pub = new io.Socket(config);
+    
+    var socket = io.connect('http://' + location.hostname + ':8080', 
+      { transports: transports });
+      
+    // sub.connect();
+    // sub.emit('SUB move-events');
+
+    pub.connect();
+    pub.emit('PUB move-events');
+
+    var $coords = $("#coords"),
+        $moveable = $("#moveable");
+
+    $moveable.draggable({
+	    cursor: 'move',
+	    opacity: 0.7,
+	    appendTo: 'body',
+	    stop : function(event, ui) {
+	      $coords.html("Left: " + parseInt(ui.offset.left) + ", Top: " + parseInt(ui.offset.top));
+	      socket.emit('move-event', { x : parseInt(ui.offset.left), y : parseInt(ui.offset.top) });
+	    }
+    });
+    
+    socket.on('move-event', function (data) {
+      $coords.html("Left: " + parseInt(data.x) + ", Top: " + parseInt(data.y));
+      $moveable.animate({'left' : data.x + "px", 'top' : data.y + "px"});
+    });
+    
+//  });
+  
+</script>
+</body>
+</html>
