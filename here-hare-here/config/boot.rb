@@ -37,6 +37,8 @@ Padrino.after_load do
     end
   }
   
+  Mongoid.load!("#{Padrino.root}/config/mongoid.yml")
+  
 end
 
 Padrino.load!

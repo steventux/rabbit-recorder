@@ -67,12 +67,12 @@ class HereHareHere < Padrino::Application
     puts params
       
     # ab -c 5 -n 1000 (with post data) averages 19 req/sec
-    ActiveRecord::Base.connection.execute(
-      "INSERT INTO perf_events (payload) VALUES ('#{params[:payload]}')"
-    )
-      
+#    ActiveRecord::Base.connection.execute(
+#      "INSERT INTO perf_events (payload) VALUES ('{params[:payload]}')"
+#    )
+#      
     # ab -c 5 -n 1000 (with post data) averages 19 req/sec
-#   PerfEvent.create :payload => params[:payload]
+    PerfEvent.create :payload => params[:payload]
 
 
 #   channel = AMQP::Channel.new
