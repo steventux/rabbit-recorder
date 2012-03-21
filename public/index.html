@@ -2,16 +2,21 @@
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <title>Rabbit.JS, Socket.IO distributed messaging demo.</title>
+  <style>
+    #coords { font-family:sans-serif; color: #ccc; }
+    #moveable { position:absolute; }
+    #replay { display:none; }
+  </style>
 </head>
 <body>
 
 <div>
-  <span id="coords" style="font-family:sans-serif;#eee;"></span>
-  <button id="replay" style="display:none;">Replay</button>
+  <span id="coords"></span>
+  <button id="replay">Replay</button>
 </div>
 
-<div id="moveable" style="position:absolute;top:40%;left:40%;">
-  <img src="/images/moveable.jpg" alt="d00m!">
+<div id="moveable">
+  <img src="/images/MOTORHEAD.jpg" alt="The Hammer!">
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -23,7 +28,7 @@
 //  $(document).ready(function(){
 
     // Set URL of your WebSocketMain.swf here:
-    WEB_SOCKET_SWF_LOCATION = "/development/rabbit-distrib-demo/WebSocketMain.swf";
+    WEB_SOCKET_SWF_LOCATION = "/flash/WebSocketMain.swf";
     // Set this to dump debug message from Flash to console.log:
     WEB_SOCKET_DEBUG = true;
   
@@ -39,7 +44,11 @@
 
     var $coords = $("#coords"),
         $replay = $("#replay"),
-        $moveable = $("#moveable");
+        $moveable = $("#moveable")
+        centerY = ($(window).height() / 2) - ($moveable.height() / 2),
+        centerX = ($("body").innerWidth() / 2) - ($moveable.width() / 2);
+        
+    $moveable.css({'top': centerY + "px", 'left' : centerX + "px"});
 
     $moveable.draggable({
 	    cursor: 'move',
