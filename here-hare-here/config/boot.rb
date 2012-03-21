@@ -32,6 +32,7 @@ Padrino.after_load do
     queue = channel.queue("performance-test-queue", :auto_delete => true)
     exchange = channel.fanout("perf-events")
     queue.bind(exchange).subscribe do |headers, payload|
+      puts payload
       PerfEvent.create :payload => payload.to_s
     end
   }
