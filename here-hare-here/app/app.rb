@@ -59,15 +59,25 @@ class HereHareHere < Padrino::Application
   #
   
   get "/" do
-    "<h2>Distributed socket messaging test</h2>"
+    "<h2>HTTP Messaging Roundtrip Test</h2>"
   end
   
   post "/message" do
+    # ab -c 5 -n 1000 (with post data) averages 800 req/sec with no db work
     puts params
-    PerfEvent.create :payload => params[:payload]
-    channel = AMQP::Channel.new
-    exchange = channel.fanout("http-perf-events")
-    exchange.publish params[:payload]
+      
+    # ab -c 5 -n 1000 (with post data) averages 19 req/sec
+    ActiveRecord::Base.connection.execute(
+      "INSERT INTO perf_events (payload) VALUES ('#{params[:payload]}')"
+    )
+      
+    # ab -c 5 -n 1000 (with post data) averages 19 req/sec
+#   PerfEvent.create :payload => params[:payload]
+
+
+#   channel = AMQP::Channel.new
+#   exchange = channel.fanout("http-perf-events")
+#   exchange.publish params[:payload]
   end
   
 end

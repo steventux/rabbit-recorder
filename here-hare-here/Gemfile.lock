@@ -45,6 +45,7 @@ GEM
     mime-types (1.18)
     minitest (2.6.2)
     multi_json (1.1.0)
+    mysql2 (0.3.11)
     padrino (0.10.5)
       padrino-admin (= 0.10.5)
       padrino-cache (= 0.10.5)
@@ -113,6 +114,7 @@ DEPENDENCIES
   amqp
   erubis (~> 2.7.0)
   minitest (~> 2.6.0)
+  mysql2
   padrino (= 0.10.5)
   rack-less
   rack-test
