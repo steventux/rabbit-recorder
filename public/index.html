@@ -20,8 +20,10 @@
       },
       socket = io.connect('http://' + location.hostname + ':8080', 
         { transports: transports });
-
-  socket.emit('perf-event', Faker.sentence);
+  
+  setTimeout(function() {
+    socket.emit('perf-event', Faker.sentence);
+  }, 2000)
   
 </script>
 </body>

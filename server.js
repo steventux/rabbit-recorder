@@ -14,12 +14,14 @@ io.sockets.on('connection', function(socket) {
   // RabbitJS publisher and subscriber.
   var pub = context.socket('PUB');
   var sub = context.socket('SUB');
+  var httpsub = context.socket('SUB');
   
   sub.setEncoding('utf8');
+  httpsub.setEncoding('utf8');
   
   // A move event from the UI, broadcast this to other clients.
   socket.on('perf-event', function (data) {
-    socket.broadcast.emit('perf-event', data);
+    // socket.broadcast.emit('perf-event', data);
     pub.write(data);
   });
   
@@ -31,13 +33,21 @@ io.sockets.on('connection', function(socket) {
   
   // Data sent to the amqp subscriber from RabbitMQ. 
   sub.on('data', function(data) {
-    socket.broadcast.emit('perf-event', data);
+    console.log(data)
+    // socket.broadcast.emit('perf-event', data);
+  })
+  
+  // Data sent to the amqp subscriber from RabbitMQ. 
+  httpsub.on('data', function(data) {
+    console.log(data)
+    // socket.broadcast.emit('perf-event', data);
   })
 
 
   // Connect publisher and subscriber to the relevant amqp exchanges.
   sub.connect('perf-events');
   pub.connect('perf-events');
+  httpsub.connect('http-perf-events');
   
 });
 

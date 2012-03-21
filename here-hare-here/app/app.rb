@@ -66,7 +66,7 @@ class HereHareHere < Padrino::Application
     puts params
     PerfEvent.create :payload => params[:payload]
     channel = AMQP::Channel.new
-    exchange = channel.direct("http-perf-events")
+    exchange = channel.fanout("http-perf-events")
     exchange.publish params[:payload]
   end
   
