@@ -41,13 +41,16 @@ io.sockets.on('connection', function(socket) {
   
   // Data via the move-events exchange to be cached or persisted.
   subMe.on('data', function(data) {
-    console.log("Move events subscriber received : " + data)
+    // console.log("Move events subscriber received : " + data)
     switch(data) {
       case "replay" :
         var len = moveEvents.length;
         if (len) {
           console.log("Playing back " + len + " events!!!") 
-          for (var i = 0; i < len; i++) pubPb.write(data);
+          for (var i = 0; i < len; i++) {
+            console.log(moveEvents[i]);
+            pubPb.write(moveEvents[i]);
+          }
         }
         moveEvents = []; // Clear the cache
         break;
@@ -58,8 +61,8 @@ io.sockets.on('connection', function(socket) {
   
   // Data sent to the amqp subscriber from RabbitMQ. 
   subPb.on('data', function(data) {
-    console.info("Playing back : " + data)
-    socket.broadcast.emit('move-event', data);
+    console.log("subscriber received playbacks : " + data)
+    socket.broadcast.emit('move-event', new String(data));
   })
 
   // Connect publisher and subscriber to the relevant amqp exchanges.
