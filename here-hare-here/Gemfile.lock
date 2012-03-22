@@ -10,6 +10,9 @@ GEM
       activesupport (= 3.1.4)
       arel (~> 2.2.3)
       tzinfo (~> 0.3.29)
+    activerecord-import (0.2.9)
+      activerecord (~> 3.0)
+      activerecord (~> 3.0)
     activesupport (3.1.4)
       multi_json (~> 1.0)
     amq-client (0.9.2)
@@ -83,6 +86,7 @@ GEM
     padrino-mailer (0.10.5)
       mail (~> 2.3.0)
       padrino-core (= 0.10.5)
+    pg (0.13.2)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-less (3.0.2)
@@ -120,6 +124,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  activerecord-import
   amqp
   bson_ext
   erubis (~> 2.7.0)
@@ -127,6 +132,7 @@ DEPENDENCIES
   mongoid
   mysql2
   padrino (= 0.10.5)
+  pg
   rack-less
   rack-test
   rake

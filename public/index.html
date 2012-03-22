@@ -1,11 +1,11 @@
 <html>
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <title>Socket Performance Test Page</title>
+  <title>Rabbit.JS, Socket.IO distributed messaging demo.</title>
 </head>
 <body>
 
-<h1>Socket Performance Test Page</h1>
+<h1>Performance Test Page</h1>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="/javascripts/socket.io.js"></script>
@@ -18,10 +18,24 @@
         port : 8080 , 
         transports: transports
       },
-      socket = io.connect('http://' + location.hostname + ':8080', 
+      socket1 = io.connect('http://' + location.hostname + ':8080', 
+        { transports: transports }),
+      socket2 = io.connect('http://' + location.hostname + ':8080', 
+        { transports: transports }),
+      socket3 = io.connect('http://' + location.hostname + ':8080', 
+        { transports: transports }),
+      socket4 = io.connect('http://' + location.hostname + ':8080', 
+        { transports: transports }),
+      socket5 = io.connect('http://' + location.hostname + ':8080', 
         { transports: transports });
   
-  socket.emit('perf-event', Faker.sentence());
+  setTimeout(function() {
+    socket1.emit('perf-event', Faker.sentence());
+    socket2.emit('perf-event', Faker.sentence());
+    socket3.emit('perf-event', Faker.sentence());
+    socket4.emit('perf-event', Faker.sentence());
+    socket5.emit('perf-event', Faker.sentence());
+  }, 2000)
   
 </script>
 </body>

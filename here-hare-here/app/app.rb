@@ -66,14 +66,16 @@ class HereHareHere < Padrino::Application
     # ab -c 5 -n 1000 (with post data) averages 800 req/sec with no db work
     puts params
       
-    # ab -c 5 -n 1000 (with post data) averages 19 req/sec
+    # ab -c 5 -n 1000 (with post data) averages 44 req/sec
 #    ActiveRecord::Base.connection.execute(
-#      "INSERT INTO perf_events (payload) VALUES ('{params[:payload]}')"
+#      "INSERT INTO perf_events (payload) VALUES ('#{params[:payload]}')"
 #    )
 #      
-    # ab -c 5 -n 1000 (with post data) averages 19 req/sec
-    PerfEvent.create :payload => params[:payload]
+    # ab -c 5 -n 1000 (with post data) averages 9 / 19 / 110 req/sec SQLite / MySQL / Postgres
+     PerfEvent.create :payload => params[:payload]
 
+    # activerecord-import gem method
+#    PerfEventsImportBuffer.buffer(params[:payload])
 
 #   channel = AMQP::Channel.new
 #   exchange = channel.fanout("http-perf-events")
