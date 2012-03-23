@@ -1,3 +1,7 @@
 development:
   host: localhost
   database: perf_test_development
+  
+production:
+  host: localhost
+  database: perf_test_production
