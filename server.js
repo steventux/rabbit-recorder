@@ -16,9 +16,6 @@ io.sockets.on('connection', function(socket) {
   // RabbitJS publishers and subscribers.
   var pubMe = context.socket('PUB');
   var subMe = context.socket('SUB');
-  
-  var pubPb = context.socket('PUB');
-  var subPb = context.socket('SUB');
 
   subMe.setEncoding('utf8');
   
