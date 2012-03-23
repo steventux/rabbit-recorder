@@ -30,44 +30,37 @@ io.sockets.on('connection', function(socket) {
   // A move event from the UI, broadcast this to other clients.
   socket.on('move-event', function (data) {
     socket.broadcast.emit('move-event', data);
+    console.log("Publishing " + data + " to move-events exchange.")
     pubMe.write(data);
   });
   
   // Clean up
   socket.on('disconnect', function() {
     pubMe.destroy();
-    subPb.destroy();
+    subMe.destroy();
   });
   
   // Data via the move-events exchange to be cached or persisted.
   subMe.on('data', function(data) {
-    // console.log("Move events subscriber received : " + data)
+    console.log("move-events exchange subscriber received : " + data)
     switch(data) {
       case "replay" :
         var len = moveEvents.length;
         if (len) {
           console.log("Playing back " + len + " events!!!") 
           for (var i = 0; i < len; i++) {
-            console.log(moveEvents[i]);
-            pubPb.write(moveEvents[i]);
+            console.log(moveEvents[i])
+            socket.emit('move-event', moveEvents[i]);
           }
+          moveEvents = []; // Clear the cache
         }
-        moveEvents = []; // Clear the cache
         break;
       default :
         moveEvents.push(data);
     }  
   })
-  
-  // Data sent to the amqp subscriber from RabbitMQ. 
-  subPb.on('data', function(data) {
-    console.log("subscriber received playbacks : " + data)
-    socket.broadcast.emit('move-event', new String(data));
-  })
 
   // Connect publisher and subscriber to the relevant amqp exchanges.
-  subPb.connect('playbacks');
-  pubPb.connect('playbacks');
   subMe.connect('move-events');
   pubMe.connect('move-events');
   
